@@ -1,0 +1,170 @@
+# Конфиг категоризации для игрушечных выписок из demo_data/.
+# Покрывает все транзакции образцов: каждая попадает ровно в одно правило.
+# Правила сортируются по priority (меньше = проверяется раньше), побеждает первое
+# совпавшее. Условие `category` сверяется точно (после нормализации регистра/пунктуации),
+# поэтому «Начисленные %» указывается как «Начисленные».
+
+# =====================  ДОХОДЫ  =====================
+
+- name: Зарплата
+  priority: 1
+  conditions:
+    type: [доход]
+    description_contains:
+      - зарплата
+  new_category: Зарплата
+
+- name: Доход с вкладов
+  priority: 2
+  conditions:
+    type: [доход]
+    category:
+      - Начисленные
+      - Капитализация
+      - Пролонгация
+  new_category: Доход с вкладов
+
+- name: Прочие доходы
+  priority: 3
+  conditions:
+    type: [доход]
+    category:
+      - Пополнения
+      - Переводы
+  new_category: Прочие доходы
+
+# =====================  ВОЗВРАТЫ  =====================
+# Возврат от маркетплейса (T-Bank). После категоризации assign_refunds пометит type=возврат.
+
+- name: Возвраты
+  priority: 5
+  conditions:
+    category:
+      - Возвраты
+  new_category: Маркетплейсы
+
+# =====================  РАСХОДЫ  =====================
+
+# --- Чаевые Ozon (раньше общего правила «Маркетплейсы») ---
+- name: Чаевые
+  priority: 1
+  conditions:
+    description_contains:
+      - чаевые
+  new_category: Прочее
+
+# --- Благотворительность (вклад) ---
+- name: Благотворительность
+  priority: 1
+  conditions:
+    category:
+      - Отчисление в Благотворительный фонд
+  new_category: Прочее
+
+# --- Переводы людям (T-Bank, расход) ---
+- name: Переводы людям
+  priority: 5
+  conditions:
+    type: [расход]
+    category:
+      - Переводы
+  new_category: Переводы людям
+
+# --- Еда ---
+- name: Супермаркеты
+  priority: 5
+  conditions:
+    category:
+      - Супермаркеты
+  new_category: Еда
+
+- name: Кафе и рестораны
+  priority: 5
+  conditions:
+    category:
+      - Кафе
+      - Рестораны
+  new_category: Кафе и рестораны
+
+# --- Здоровье и красота ---
+- name: Здоровье и красота
+  priority: 5
+  conditions:
+    category:
+      - Аптеки
+      - Медицина
+      - Красота
+  new_category: Здоровье и красота
+
+# --- Одежда и обувь ---
+- name: Одежда и обувь
+  priority: 5
+  conditions:
+    category:
+      - Одежда и обувь
+  new_category: Одежда и обувь
+
+# --- Транспорт ---
+- name: Транспорт
+  priority: 5
+  conditions:
+    category:
+      - Транспорт
+  new_category: Транспорт
+
+# --- Связь ---
+- name: Связь
+  priority: 5
+  conditions:
+    category:
+      - Связь и интернет
+  new_category: Связь
+
+# --- Дом ---
+- name: Дом
+  priority: 5
+  conditions:
+    category:
+      - Дом и ремонт
+  new_category: Дом
+
+# --- Досуг ---
+- name: Досуг
+  priority: 5
+  conditions:
+    category:
+      - Книги и канцтовары
+      - Развлечения
+  new_category: Досуг
+
+# --- Техника ---
+- name: Техника
+  priority: 5
+  conditions:
+    category:
+      - Электроника
+  new_category: Техника
+
+# --- Путешествия ---
+- name: Путешествия
+  priority: 5
+  conditions:
+    category:
+      - Путешествия
+  new_category: Путешествия
+
+# --- Цветы → Прочее ---
+- name: Цветы
+  priority: 5
+  conditions:
+    category:
+      - Цветы
+  new_category: Прочее
+
+# --- Маркетплейсы (Ozon оплата/возврат + Sample Shop) ---
+- name: Маркетплейсы
+  priority: 6
+  conditions:
+    category:
+      - Маркетплейсы
+  new_category: Маркетплейсы

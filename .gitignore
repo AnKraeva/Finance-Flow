@@ -1,0 +1,52 @@
+# Python-артефакты
+__pycache__/
+*.py[cod]
+*.so
+.Python
+.pytest_cache/
+.mypy_cache/
+
+# Виртуальные окружения
+.venv/
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# Внутренняя инструкция для Claude Code
+CLAUDE.md
+
+# IDE / ОС
+.DS_Store
+.idea/
+.vscode/
+.Rhistory
+
+# Локальные секреты
+creds.json
+*-service-account.json
+*credentials*.json
+*.env
+.env*
+
+# Личный датасет финансов (вход + выход) — вся папка приватная.
+# demo_data/ — публичный аналог, намеренно НЕ игнорируется.
+data/
+
+# Личные правила категоризации (в git храним только демо-конфиги *.sample.yaml)
+configs/categories.yaml
+configs/types.yaml
+
+# Дашборды Tableau — файлы содержат экстракт реальных данных, поэтому приватны.
+# Демо-версия на demo_data/ может коммититься (исключение ниже).
+*.twb
+*.twbx
+!demo_data/**/*.twbx
+# Временные/recovery-файлы Tableau (мусор, никогда не коммитим)
+*.twbr
+.~*
+
+# Локальные выходные файлы
+reports/
