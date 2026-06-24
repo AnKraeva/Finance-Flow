@@ -23,6 +23,13 @@ ETL-проект для личных финансов: парсит банков
 - Сохранение итогового датасета в CSV
 - Готовый демо-набор на вымышленных данных (`demo_data/`)
 
+ ## Стек
+- Python
+- pandas
+- pdfplumber
+- PyYAML
+- Tableau
+
 ## Схема пайплайна
 
 ```mermaid
@@ -70,14 +77,12 @@ flowchart LR
 Проект обходит папку с выписками, определяет источник по расширению файла и префиксу имени, а затем передаёт файл в нужный парсер.
 
 Основные точки входа:
-
 - [`pipeline/parsing.py`](pipeline/parsing.py)
 - [`parsers/__init__.py`](parsers/__init__.py)
 
 ### 2. Нормализация и обогащение
 
 После парсинга все операции приводятся к единой схеме:
-
 - `source`
 - `date`
 - `direction`
@@ -86,25 +91,24 @@ flowchart LR
 - `raw_description`
 
 Дальше пайплайн:
-
 - определяет тип операции (`доход`, `расход`, `внутренний`, `возврат`)
 - уточняет категории на основе YAML-правил
 - удаляет переводы между собственными счетами
 
 Ключевая логика:
-
 - [`pipeline/typification.py`](pipeline/typification.py)
 - [`pipeline/categorization.py`](pipeline/categorization.py)
+- [`run_pipeline.py`](run_pipeline.py)
 
 ### 3. Выгрузка
 
-Финальный очищенный датасет сохраняется в CSV рядом с входными данными — в `<набор>/output/` с датой и временем в имени файла. Дальше его удобно подхватывать в BI-инструментах (например, в Tableau).
+Финальный очищенный датасет сохраняется в CSV рядом с входными данными — в `<data_набор>/output/` с датой и временем в имени файла. Дальше его удобно подхватывать в BI-инструментах.
 
-- [`run_pipeline.py`](run_pipeline.py)
 
 ## Дашборд
 
-Итоговый датасет визуализируется в Tableau. Дашборд собран на вымышленном наборе `demo_data/`.
+Итоговый датасет визуализируется в Tableau. 
+Дашборд собран на вымышленном наборе `demo_data/`.
 
 🔗 **Интерактивная версия:** [Finance Flow на Tableau Public](https://public.tableau.com/views/FinanceFlowdemo/sheet0)
 
@@ -126,13 +130,6 @@ flowchart LR
 
 > Сам файл `.twbx` в репозиторий не коммитится (содержит экстракт данных) — он остаётся локально, а в портфолио ведёт ссылка на Tableau Public.
 
-## Стек
-
-- Python
-- pandas
-- pdfplumber
-- PyYAML
-- Tableau
 
 ## Локальный запуск
 
@@ -149,19 +146,13 @@ pip install -r requirements.txt
 Положите выписки в папку `data/input/`.
 
 Сейчас поддерживаются такие шаблоны имён:
-
 - `sber*.pdf`
 - `tbank*.csv`
 - `ozon*.pdf`
 
 ### 3. Подготовить конфиги
 
-Реальные `configs/types.yaml` и `configs/categories.yaml` лежат вне git. В качестве отправной точки возьмите демо-конфиги и отредактируйте их под свои банки и категории:
-
-```bash
-cp configs/types.sample.yaml configs/types.yaml
-cp configs/categories.sample.yaml configs/categories.yaml
-```
+Реальные `configs/types.yaml` и `configs/categories.yaml` лежат вне git. В качестве отправной точки возьмите демо-конфиги и отредактируйте их под свои банки и категории. 
 
 А для прогона на демо-данных конфиги уже готовы — `configs/types.sample.yaml` и `configs/categories.sample.yaml`, копировать ничего не нужно.
 
