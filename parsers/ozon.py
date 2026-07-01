@@ -11,7 +11,10 @@ def parse_ozon_pdf(pdf_path: str) -> pd.DataFrame:
     with pdfplumber.open(pdf_path) as pdf:
         for page_num, page in enumerate(pdf.pages):
 
-            rects = page.rects
+            # Ozon сменил отрисовку таблицы: в старых выписках строки разделялись
+            # прямоугольниками (page.rects), в новых — линиями (page.lines).
+            # Берём оба источника, чтобы парсер читал оба формата.
+            rects = page.rects + page.lines
 
             # --- 1. горизонтальные линии ---
             h_rects = [r for r in rects if r["height"] < 2]

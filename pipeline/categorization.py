@@ -13,8 +13,13 @@ def match_rule(row: pd.Series, rule: dict) -> bool:
     date = row.get("date")
 
     # --- description_contains ---
+    # Ключи из YAML нормализуем так же, как описание, чтобы пунктуация
+    # (например, точка в "mos.ru") не ломала совпадение.
     if "description_contains" in cond:
-        if not any(keyword in description for keyword in cond["description_contains"]):
+        if not any(
+            normalize_text(keyword) in description
+            for keyword in cond["description_contains"]
+        ):
             return False
 
     # --- amount_min ---
@@ -49,7 +54,7 @@ def match_rule(row: pd.Series, rule: dict) -> bool:
 
     # --- category ---
     if "category" in cond:
-        if category not in [c.lower() for c in cond["category"]]:
+        if category not in [normalize_text(c) for c in cond["category"]]:
             return False
 
     # --- weekday ---
