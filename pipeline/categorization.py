@@ -74,7 +74,11 @@ def normalize_category_with_debug(row: pd.Series, rules: list) -> str:
         if match_rule(row, rule):
             return rule["new_category"], rule["name"]
 
-    return row.get("category"), None
+    # Ни одно правило не сработало: категория по умолчанию = сырая банковская
+    # (raw_category заполнена всегда), подкатегория остаётся None — это маркер
+    # дыры для этапа проверки покрытия (pipeline/coverage.py). Финальную замену
+    # None → "Прочее" делает fill_default_subcategory перед записью.
+    return row.get("raw_category"), None
 
 
 def assign_categories(df, rules):
