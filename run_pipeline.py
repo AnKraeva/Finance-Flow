@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import argparse
 import logging
-from datetime import datetime
 from pathlib import Path
 
 logger = logging.getLogger(__name__)
@@ -13,9 +12,9 @@ OUTPUT_SUBDIR = "output"
 
 def build_default_output_path(data_dir: str = "data") -> str:
     # Каждый датасет самодостаточен: данные читаются из <data-dir>/input,
-    # результат кладётся рядом в <data-dir>/output с датой и временем в имени.
-    timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    return str(Path(data_dir) / OUTPUT_SUBDIR / f"transactions_{timestamp}.csv")
+    # результат кладётся рядом в <data-dir>/output. Файл один и перезаписывается
+    # при каждом прогоне.
+    return str(Path(data_dir) / OUTPUT_SUBDIR / "transactions.csv")
 
 
 def build_parser() -> argparse.ArgumentParser:
