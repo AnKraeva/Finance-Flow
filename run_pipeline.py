@@ -42,7 +42,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--output-csv",
         default=None,
-        help="Where to save the result CSV. Defaults to a timestamped file in <data-dir>/output/.",
+        help="Where to save the result CSV. Defaults to <data-dir>/output/transactions.csv.",
     )
     return parser
 
