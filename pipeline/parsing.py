@@ -7,6 +7,7 @@ logger = logging.getLogger(__name__)
 
 
 from parsers import PARSERS
+from parsers.utils import validate_schema
 
 # =========================================================
 # ОБХОД ПАПКИ С ВЫПИСКАМИ
@@ -54,6 +55,7 @@ def parse_folder(folder_path: str) -> pd.DataFrame:
             # logger.info(f"[{ext.upper()}] Обрабатываю: {filename}")
 
             df = parser(file_path)
+            validate_schema(df, source_hint=filename)
             all_dfs.append(df)
 
             processed_files += 1

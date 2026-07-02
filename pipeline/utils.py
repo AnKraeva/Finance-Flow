@@ -1,16 +1,8 @@
-import pandas as pd
-import re
 import yaml
 
-
-def normalize_text(text):
-    if pd.isna(text):
-        return ""
-    text = str(text).lower()
-    text = text.replace("\xa0", " ")  # важно для PDF
-    text = re.sub(r"[^\w\s]", " ", text)
-    text = re.sub(r"\s+", " ", text)
-    return text.strip()
+# normalize_text живёт в нижнем слое (parsers), здесь реэкспортируется для
+# обратной совместимости импортов внутри pipeline.
+from parsers.utils import normalize_text  # noqa: F401
 
 
 def load_yaml(path: str):
